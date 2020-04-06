@@ -9,8 +9,9 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OdeToFood.Data;
 
-namespace OdoToFood
+namespace OdeToFood
 {
     public class Startup
     {
@@ -31,6 +32,7 @@ namespace OdoToFood
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddSingleton<IRestaurantData, InMemoryRestaurantData>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
