@@ -16,8 +16,9 @@ namespace OdeToFood.Pages.Restaurants
         private readonly IRestaurantData restaurantData;
 
         public string Message { get; set; }
-        public IEnumerable<Restaurant> restaurants  { get; set; }
-
+        public IEnumerable<Restaurant> Restaurants  { get; set; }
+        [BindProperty(SupportsGet = true)]
+        public string SearchTerm { get; set; }
 
         public ListModel(IConfiguration configuration,
             IRestaurantData restaurantData)
@@ -26,10 +27,11 @@ namespace OdeToFood.Pages.Restaurants
             this.restaurantData = restaurantData;
         }
 
-        public void OnGet()
+        public void OnGet(string searchTerm = null)
         {
+
             this.Message = configuration["Message"];
-            this.restaurants = restaurantData.GetAll();
+            this.Restaurants = restaurantData.GetRestaurantsByName(searchTerm);
         }
     }
 }
