@@ -12,6 +12,12 @@ namespace OdeToFood.Data
 
         Restaurant GetRestaurantsById(int id);
 
+        Restaurant Update(Restaurant updateRestaurant);
+
+        Restaurant Add(Restaurant newRestaurant);
+
+
+        int Comit();
     }
 
     public class InMemoryRestaurantData : IRestaurantData
@@ -29,6 +35,18 @@ namespace OdeToFood.Data
 
         }
 
+        public Restaurant Add(Restaurant newRestaurant)
+        {
+            this.restaurants.Add(newRestaurant);
+            newRestaurant.Id = this.restaurants.Max(x => x.Id) + 1;
+            return newRestaurant;
+        }
+
+        public int Comit()
+        {
+            return 0;
+        }
+
         public Restaurant GetRestaurantsById(int id)
         {
             return this.restaurants.SingleOrDefault(r => r.Id == id);
@@ -40,6 +58,18 @@ namespace OdeToFood.Data
                    where string.IsNullOrEmpty(name) || r.Name.StartsWith(name)
                    orderby r.Name
                    select r;
+        }
+
+        public Restaurant Update(Restaurant updateRestaurant)
+        {
+            var restaurant = restaurants.SingleOrDefault(r => r.Id == updateRestaurant.Id);
+            if(restaurant != null)
+            {
+                restaurant.Name = updateRestaurant.Name;
+                restaurant.Location = updateRestaurant.Location;
+                restaurant.Cuisine = updateRestaurant.Cuisine;
+            }
+            return restaurant;
         }
     }
 }
